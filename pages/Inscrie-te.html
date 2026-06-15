@@ -85,6 +85,36 @@
     </div>
   </div>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+  document.querySelector('.inscrie-form').addEventListener('submit', function(e) {
+    e.preventDefault();
 
+   
+    const data = [
+      ['Numele copilului', 'Data nasterii', 'Numele parintelui', 'Telefon', 'Email', 'Program'],
+      [
+        document.querySelectorAll('.inscrie-form input')[0].value,
+        document.querySelectorAll('.inscrie-form input')[1].value,
+        document.querySelectorAll('.inscrie-form input')[2].value,
+        document.querySelectorAll('.inscrie-form input')[3].value,
+        document.querySelectorAll('.inscrie-form input')[4].value,
+        document.querySelector('.inscrie-select').value,
+      ]
+    ];
+
+  
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Inscrieri');
+
+    
+    XLSX.writeFile(wb, 'Inscriere_KidZone.xlsx');
+
+    
+    alert('Cererea a fost trimisă! Fișierul Excel a fost descărcat.');
+    this.reset();
+  });
+</script>
 </body>
 </html>
