@@ -123,7 +123,7 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
 
     } catch (error) {
         console.error("Fetch error:", error);
-        alert("❌ Eroare de conexiune.\n\nVerifică:\n1. Ai internet\n2. Scriptul este publicat cu acces 'Anyone'\n3. Încearcă să reîncarci pagina");
+        alert("❌ A apărut o eroare la trimiterea cererii. Te rugăm să încerci din nou.");
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
