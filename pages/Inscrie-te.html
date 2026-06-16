@@ -85,36 +85,64 @@
     </div>
   </div>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
-  document.querySelector('.inscrie-form').addEventListener('submit', function(e) {
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNA519HlLC53IFsr-6PSTJp78-W2HvZZWLyx0gwfKT0XfHryi5Lc7_eS3bbGsvxHeq/exec";
+
+document.querySelector(".inscrie-form").addEventListener("submit", async function(e) {
+
     e.preventDefault();
 
-   
-    const data = [
-      ['Numele copilului', 'Data nasterii', 'Numele parintelui', 'Telefon', 'Email', 'Program'],
-      [
-        document.querySelectorAll('.inscrie-form input')[0].value,
-        document.querySelectorAll('.inscrie-form input')[1].value,
-        document.querySelectorAll('.inscrie-form input')[2].value,
-        document.querySelectorAll('.inscrie-form input')[3].value,
-        document.querySelectorAll('.inscrie-form input')[4].value,
-        document.querySelector('.inscrie-select').value,
-      ]
-    ];
+    const inputs = document.querySelectorAll(".inscrie-form input");
 
-  
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Inscrieri');
+    const data = {
+        childName: inputs[0].value,
+        birthDate: inputs[1].value,
+        parentName: inputs[2].value,
+        phone: inputs[3].value,
+        email: inputs[4].value,
+        program: document.querySelector(".inscrie-select").value
+    };
 
-    
-    XLSX.writeFile(wb, 'Inscriere_KidZone.xlsx');
+    // Проверка заполнения
+    if (
+        !data.childName ||
+        !data.birthDate ||
+        !data.parentName ||
+        !data.phone ||
+        !data.email ||
+        !data.program
+    ) {
+        alert("Completați toate câmpurile!");
+        return;
+    }
 
-    
-    alert('Cererea a fost trimisă! Fișierul Excel a fost descărcat.');
-    this.reset();
-  });
+    try {
+
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        alert("Cererea a fost trimisă cu succes!");
+
+        this.reset();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Eroare la trimiterea cererii!");
+
+    }
+
+});
+
 </script>
 </body>
 </html>
