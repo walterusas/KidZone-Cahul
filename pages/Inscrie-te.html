@@ -90,6 +90,7 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
 
     const submitBtn = document.getElementById("submitBtn");
     const originalText = submitBtn.textContent;
+    
     submitBtn.disabled = true;
     submitBtn.textContent = "Se trimite...";
 
@@ -102,7 +103,6 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
         email: document.getElementById("email").value.trim()
     };
 
-    // Проверка заполнения
     if (!data.childName || !data.birthDate || !data.parentName || !data.program || !data.phone) {
         alert("❌ Te rog completează toate câmpurile obligatorii!");
         submitBtn.disabled = false;
@@ -117,24 +117,12 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
             body: JSON.stringify(data)
         });
 
-        // Пробуем прочитать ответ
-        let result;
-        try {
-            result = await response.json();
-        } catch (e) {
-            result = { status: "success" };
-        }
-
-        if (result.status === "success") {
-            alert("✅ Cererea a fost trimisă cu succes!");
-            this.reset();
-        } else {
-            alert("⚠️ Cererea trimisă, dar ceva nu a mers. Verifică tabelul.");
-        }
+        alert("✅ Cererea a fost trimisă cu succes!");
+        this.reset();
 
     } catch (error) {
-        console.error(error);
-        alert("❌ Eroare de conexiune. Verifică internetul și încearcă din nou.");
+        console.error("Fetch error:", error);
+        alert("❌ Eroare de conexiune.\n\nVerifică:\n1. Ai ли интернет\n2. Скрипт опубликован с доступом 'Anyone'\n3. Попробуй обновить страницу");
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
