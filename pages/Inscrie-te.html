@@ -89,35 +89,55 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
     e.preventDefault();
 
     const submitBtn = document.getElementById("submitBtn");
+    const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = "Se trimite...";
 
     const data = {
-        childName: document.getElementById("childName").value,
+        childName: document.getElementById("childName").value.trim(),
         birthDate: document.getElementById("birthDate").value,
-        parentName: document.getElementById("parentName").value,
+        parentName: document.getElementById("parentName").value.trim(),
         program: document.getElementById("program").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("email").value
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim()
     };
 
+    // Проверка заполнения
+    if (!data.childName || !data.birthDate || !data.parentName || !data.program || !data.phone) {
+        alert("❌ Te rog completează toate câmpurile obligatorii!");
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        return;
+    }
+
     try {
-        await fetch(SCRIPT_URL, {
+        const response = await fetch(SCRIPT_URL, {
             method: "POST",
-            mode: "no-cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
-        alert("✅ Cererea a fost trimisă cu succes!");
-        this.reset();
+        // Пробуем прочитать ответ
+        let result;
+        try {
+            result = await response.json();
+        } catch (e) {
+            result = { status: "success" };
+        }
+
+        if (result.status === "success") {
+            alert("✅ Cererea a fost trimisă cu succes!");
+            this.reset();
+        } else {
+            alert("⚠️ Cererea trimisă, dar ceva nu a mers. Verifică tabelul.");
+        }
 
     } catch (error) {
         console.error(error);
-        alert("❌ Eroare la trimitere. Încearcă din nou.");
+        alert("❌ Eroare de conexiune. Verifică internetul și încearcă din nou.");
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = "Trimite Cererea";
+        submitBtn.textContent = originalText;
     }
 });
 </script>
