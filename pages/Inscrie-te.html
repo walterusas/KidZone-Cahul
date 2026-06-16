@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Înscrie-te — KidZone</title>
+    <title>Înscrie-te — KidZone Cahul</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../assets/Logo.png" type="image/png">
 </head>
@@ -15,11 +15,9 @@
       <img src="../assets/Logo.png" alt="KidZone Logo">
     </div>
     <input type="checkbox" id="burger-toggle" class="burger-toggle">
-<label for="burger-toggle" class="burger-btn">
-  <span></span>
-  <span></span>
-  <span></span>
-</label>
+    <label for="burger-toggle" class="burger-btn">
+      <span></span><span></span><span></span>
+    </label>
     <nav>
       <ul>
         <li><a href="../index.html">Acasă</a></li>
@@ -33,7 +31,6 @@
 </header>
 
 <main>
-
   <section class="inscrie-section">
     <div class="inscrie-header">
       <h2>Înscrie-te acum</h2>
@@ -41,33 +38,32 @@
     </div>
 
     <div class="inscrie-form-wrap">
-      <form class="inscrie-form">
-  <div class="inscrie-row">
-    <input type="text" placeholder="Numele copilului">
-    <input type="date">
-  </div>
-  <div class="inscrie-row">
-    <input type="text" placeholder="Numele părintelui" style="grid-column: 1 / -1;">
-  </div>
-  <div class="inscrie-row">
-  <select class="inscrie-select">
-    <option value="" disabled selected>Selectează programul</option>
-    <option value="gradinita">Grădiniță (3–6 ani)</option>
-    <option value="primar">Clasa Primară (7–12 ani)</option>
-    <option value="robotica">Robotică (8–14 ani)</option>
-    <option value="dans">Dans (toate vârstele)</option>
-    <option value="fotbal">Fotbal (6–14 ani)</option>
-  </select>
-</div>
-  <div class="inscrie-row">
-    <input type="tel" placeholder="Numărul telefonului">
-    <input type="email" placeholder="E-mail">
-  </div>
-  <button type="submit">Trimite Cererea</button>
-</form>
+      <form id="inscriereForm" class="inscrie-form">
+        <div class="inscrie-row">
+          <input type="text" id="childName" placeholder="Numele copilului" required>
+          <input type="date" id="birthDate" required>
+        </div>
+        <div class="inscrie-row">
+          <input type="text" id="parentName" placeholder="Numele părintelui" required>
+        </div>
+        <div class="inscrie-row">
+          <select id="program" class="inscrie-select" required>
+            <option value="" disabled selected>Selectează programul</option>
+            <option value="gradinita">Grădiniță (3–6 ani)</option>
+            <option value="primar">Clasa Primară (7–12 ani)</option>
+            <option value="robotica">Robotică</option>
+            <option value="dans">Dans</option>
+            <option value="fotbal">Fotbal</option>
+          </select>
+        </div>
+        <div class="inscrie-row">
+          <input type="tel" id="phone" placeholder="Numărul telefonului" required>
+          <input type="email" id="email" placeholder="E-mail">
+        </div>
+        <button type="submit" id="submitBtn">Trimite Cererea</button>
+      </form>
     </div>
   </section>
-
 </main>
 
 <footer>
@@ -87,7 +83,7 @@
 </footer>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIt4jBnvZRDbtfpFMLn5uPRQVdXlLjP7q3_xPaOpjpFzsnOGledtbjdFEL0pLvComZNw/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNA519HlLC53IFsr-6PSTJp78-W2HvZZWLyx0gwfKT0XfHryi5Lc7_eS3bbGsvxHeq/exec";
 
 document.getElementById("inscriereForm").addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -106,7 +102,7 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
     };
 
     try {
-        const response = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
@@ -118,7 +114,7 @@ document.getElementById("inscriereForm").addEventListener("submit", async functi
 
     } catch (error) {
         console.error(error);
-        alert("❌ Eroare la trimitere. Verifică conexiunea.");
+        alert("❌ Eroare la trimitere. Încearcă din nou.");
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "Trimite Cererea";
