@@ -87,62 +87,43 @@
 </footer>
 
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIt4jBnvZRDbtfpFMLn5uPRQVdXlLjP7q3_xPaOpjpFzsnOGledtbjdFEL0pLvComZNw/exec"; 
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIt4jBnvZRDbtfpFMLn5uPRQVdXlLjP7q3_xPaOpjpFzsnOGledtbjdFEL0pLvComZNw/exec";
-
-document.querySelector(".inscrie-form").addEventListener("submit", async function(e) {
-
+document.getElementById("inscriereForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const inputs = document.querySelectorAll(".inscrie-form input");
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Se trimite...";
 
     const data = {
-        childName: inputs[0].value,
-        birthDate: inputs[1].value,
-        parentName: inputs[2].value,
-        phone: inputs[3].value,
-        email: inputs[4].value,
-        program: document.querySelector(".inscrie-select").value
+        childName: document.getElementById("childName").value,
+        birthDate: document.getElementById("birthDate").value,
+        parentName: document.getElementById("parentName").value,
+        program: document.getElementById("program").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value
     };
 
-    // Проверка заполнения
-    if (
-        !data.childName ||
-        !data.birthDate ||
-        !data.parentName ||
-        !data.phone ||
-        !data.email ||
-        !data.program
-    ) {
-        alert("Completați toate câmpurile!");
-        return;
-    }
-
     try {
-
-        await fetch(SCRIPT_URL, {
+        const response = await fetch(SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
-        alert("Cererea a fost trimisă cu succes!");
-
+        alert("✅ Cererea a fost trimisă cu succes!");
         this.reset();
 
     } catch (error) {
-
         console.error(error);
-
-        alert("Eroare la trimiterea cererii!");
-
+        alert("❌ Eroare la trimitere. Verifică conexiunea.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Trimite Cererea";
     }
-
 });
-
 </script>
 </body>
 </html>
